@@ -61,4 +61,70 @@
     scene.addEventListener('pointerleave', () => { scene.style.setProperty('--rx', '0deg'); scene.style.setProperty('--ry', '0deg'); });
   }
   document.addEventListener('visibilitychange', () => document.documentElement.classList.toggle('motion-paused', document.hidden));
+
+  // Keep a single, semantic table for desktop, print and compact phone cards.
+  // The observer also handles calculator rows and reports created after a CSV import.
+  const main = document.querySelector('main');
+  const updateScroll = box => {
+    const scrolls = box.scrollWidth > box.clientWidth + 2;
+    const hint = box.nextElementSibling;
+    if (hint?.classList.contains('table-hint')) hint.hidden = !scrolls;
+    if (scrolls) {
+      box.tabIndex = 0;
+      box.setAttribute('role', 'region');
+      box.setAttribute('aria-label', t('Таблица с горизонтальной прокруткой', 'Horizontally scrollable table'));
+    } else {
+      box.removeAttribute('tabindex');
+      box.removeAttribute('role');
+      box.removeAttribute('aria-label');
+    }
+  };
+  const tableResize = typeof ResizeObserver === 'function' ? new ResizeObserver(entries => entries.forEach(e => updateScroll(e.target))) : null;
+  const decorateTables = () => {
+    main?.querySelectorAll('table').forEach(table => {
+      const headers = [...table.querySelectorAll('thead th')].map(th => {
+        th.scope = 'col';
+        th.setAttribute('role', 'columnheader');
+        return th.textContent.trim();
+      });
+      if (!headers.length) return;
+      const mode = table.closest('#raw-preview') ? 'scroll' : table.closest('.sample-workspace') ? 'compact' : 'cards';
+      table.dataset.responsive = mode;
+      table.setAttribute('role', 'table');
+      table.querySelectorAll('thead,tbody,tfoot').forEach(group => group.setAttribute('role', 'rowgroup'));
+      table.querySelectorAll('tr').forEach(row => row.setAttribute('role', 'row'));
+      table.querySelectorAll('tbody tr').forEach(row => [...row.cells].forEach((cell, index) => {
+        cell.setAttribute('role', 'cell');
+        if (mode === 'scroll' || cell.querySelector(':scope > .cell-value')) return;
+        const value = document.createElement('span');
+        value.className = 'cell-value';
+        while (cell.firstChild) value.append(cell.firstChild);
+        if (/^[+−-]?[\d\s.,\u00a0]+\s*(?:%|mm|мм|RUB|₽)?$/.test(value.textContent.trim())) value.classList.add('cell-number');
+        const label = document.createElement('span');
+        label.className = 'cell-label';
+        label.setAttribute('aria-hidden', 'true');
+        label.textContent = headers[index] || '';
+        cell.append(label, value);
+      }));
+      const box = table.closest('.table-scroll');
+      if (!box) return;
+      box.classList.toggle('table-cards', mode === 'cards');
+      if (!box.dataset.scrollReady) {
+        box.dataset.scrollReady = 'true';
+        const hint = document.createElement('p');
+        hint.className = 'table-hint small';
+        hint.textContent = t('↔ Проведите по таблице, чтобы увидеть остальные столбцы.', '↔ Swipe across the table to see the remaining columns.');
+        box.after(hint);
+        tableResize?.observe(box);
+      }
+      updateScroll(box);
+    });
+  };
+  let tablesFrame = 0;
+  const scheduleTables = () => {
+    if (!tablesFrame) tablesFrame = requestAnimationFrame(() => { tablesFrame = 0; decorateTables(); });
+  };
+  decorateTables();
+  if (main) new MutationObserver(scheduleTables).observe(main, { childList: true, subtree: true });
+  window.addEventListener('resize', scheduleTables, { passive: true });
 })();
