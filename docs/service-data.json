@@ -1,0 +1,185 @@
+{
+  "release": "SLICH-2026-10-20-JOURNEY",
+  "languages": [
+    "ru",
+    "en"
+  ],
+  "updated_at": "2026-10-20",
+  "status": "Рабочий прототип. Цены плановые. Производственный пилот и аккредитация СЛИЧ не подтверждены.",
+  "services": [
+    {
+      "id": "cycle",
+      "name": "Цикл сличения",
+      "category": "Сравнение",
+      "price": 75000,
+      "scope": "Один проход, один объект и одна характеристика в трёх сечениях, до трёх площадок.",
+      "output": "Согласованный протокол, таблица исходных данных, проверка условий, разбор метролога и отчёт.",
+      "inputs": "Объект, параметр, результаты сторон, приборы, неопределённость и условия контроля.",
+      "limit": "Новый метод, дополнительные характеристики, дальняя доставка и заключение о годности партии согласуются отдельно.",
+      "en": {
+        "name": "Comparison cycle",
+        "category": "Comparison",
+        "scope": "One round, one object, one characteristic in three sections, up to three sites.",
+        "output": "An agreed protocol, raw results, applicability checks, a metrologist review and a report.",
+        "inputs": "Object, measurand, site results, instruments, uncertainty and measurement conditions.",
+        "limit": "Additional characteristics, a new method, long-distance shipping and product acceptance need a separate scope."
+      },
+      "price_status": "Плановая цена. Подтвердить сметой и договором."
+    },
+    {
+      "id": "project",
+      "name": "Разовый проект",
+      "category": "Сравнение",
+      "price": 175000,
+      "scope": "Подготовка и два ограниченных цикла по одной задаче — до и после согласованной корректировки.",
+      "output": "Версия общего метода, два отчёта и перечень согласованных действий по следующим поставкам.",
+      "inputs": "Описание спора, согласие сторон, объект и доступные измерительные данные.",
+      "limit": "Подписка и подключение за этот же объём дополнительно не начисляются. Эффект нельзя переносить на все споры без проверки.",
+      "en": {
+        "name": "One-off project",
+        "category": "Comparison",
+        "scope": "Preparation and two limited rounds for one task, before and after an agreed method change.",
+        "output": "A versioned method, two reports and agreed actions for subsequent deliveries.",
+        "inputs": "Description of the disagreement, consent of both parties, the object and available results.",
+        "limit": "Preparation is included. No extra connection fee or subscription for the same work. Benefits cannot be extrapolated to every dispute."
+      },
+      "price_status": "Плановая цена. Подтвердить сметой и договором."
+    },
+    {
+      "id": "regular",
+      "name": "Регулярное сопровождение",
+      "category": "Сопровождение",
+      "price": 15000,
+      "scope": "Одна оплачивающая организация, версии протоколов и история согласований. Циклы оплачиваются отдельно.",
+      "output": "План контроля, реестр кейсов, история изменений и поддержка в согласованных пределах.",
+      "inputs": "Количество циклов, пользователей и повторяющихся задач контроля.",
+      "limit": "12 месяцев и 3 цикла: 405 000 ₽ в год, 430 000 ₽ с подключением. За приглашённую сторону второй подписки за тот же кейс нет.",
+      "en": {
+        "name": "Ongoing support",
+        "category": "Support",
+        "scope": "One paying organisation, versioned protocols and a case register. Measurement cycles are billed separately.",
+        "output": "A control plan, a case register, change history and support within an agreed scope.",
+        "inputs": "Cycle frequency, users and recurring inspection tasks.",
+        "limit": "12 months and 3 cycles: RUB 405,000 recurring, RUB 430,000 in the first year. No automatic second subscription for an invited party."
+      },
+      "price_status": "Плановая цена. Подтвердить сметой и договором."
+    },
+    {
+      "id": "protocol",
+      "name": "Цифровой протокол",
+      "category": "Подготовка",
+      "price": 25000,
+      "scope": "Один объект, одна характеристика, согласование полей и единиц без проведения измерительного цикла.",
+      "output": "Шаблон протокола, словарь полей, CSV и правила версионирования.",
+      "inputs": "Действующая форма предприятия, описание метода и требования заказчика.",
+      "limit": "В разовом проекте подготовка уже включена. Этот модуль выбирают отдельно для самостоятельной работы.",
+      "en": {
+        "name": "Digital protocol",
+        "category": "Preparation",
+        "scope": "One object and one characteristic. Align fields and units without conducting measurements.",
+        "output": "A protocol template, a data dictionary, CSV and version rules.",
+        "inputs": "Existing forms, the measurement method and customer requirements.",
+        "limit": "Preparation is already included in a one-off project. Select this module for independent work."
+      },
+      "price_status": "Плановая цена. Подтвердить сметой и договором."
+    },
+    {
+      "id": "audit",
+      "name": "Разбор метода контроля",
+      "category": "Подготовка",
+      "price": 45000,
+      "scope": "Документальный разбор одного метода и двух комплектов условий измерения.",
+      "output": "Карта различий в базировании, точках, приборах и условиях; список вопросов метрологу.",
+      "inputs": "Методы сторон, схема детали, приборы, первичные серии и условия.",
+      "limit": "Не заменяет аттестацию методики, поверку или независимую экспертизу. Корневая причина требует проверки.",
+      "en": {
+        "name": "Measurement method review",
+        "category": "Preparation",
+        "scope": "Document review of one method and two sets of measurement conditions.",
+        "output": "A map of differences and questions for a metrologist.",
+        "inputs": "Methods, part drawing, instruments, raw series and conditions.",
+        "limit": "Does not replace method validation, instrument verification or an independent expert opinion. Root causes require testing."
+      },
+      "price_status": "Плановая цена. Подтвердить сметой и договором."
+    },
+    {
+      "id": "repeatability",
+      "name": "Анализ повторяемости",
+      "category": "Сравнение",
+      "price": 60000,
+      "scope": "Одна характеристика и серия повторов по заранее согласованному плану.",
+      "output": "Разброс результатов, замечания по серии и план повторного контроля.",
+      "inputs": "Первичные результаты, операторы, повторы, приборы и условия каждого измерения.",
+      "limit": "Автоматическое решение о пригодности системы пока не реализовано. Полный GR&R и бюджет неопределённости требуют отдельного плана.",
+      "en": {
+        "name": "Repeatability analysis",
+        "category": "Comparison",
+        "scope": "One characteristic and repeated observations under an agreed study plan.",
+        "output": "Descriptive spread, observations and a repeat-inspection plan.",
+        "inputs": "Raw results, operators, repeats, instruments and conditions.",
+        "limit": "A full GR&R study and uncertainty budget require a separate design. No automatic fitness decision."
+      },
+      "price_status": "Плановая цена. Подтвердить сметой и договором."
+    },
+    {
+      "id": "incoming",
+      "name": "Настройка входного контроля",
+      "category": "Подготовка",
+      "price": 80000,
+      "scope": "Одна группа деталей и один маршрут согласования с поставщиком.",
+      "output": "Карта контроля, распределение ответственности и требования к следующему протоколу поставки.",
+      "inputs": "План приёмки, требования закупки, чертежи и история расхождений.",
+      "limit": "Не сертификация производства. Решения о приёмке и договорные условия утверждает предприятие.",
+      "en": {
+        "name": "Incoming inspection setup",
+        "category": "Preparation",
+        "scope": "One part family and one supplier coordination workflow.",
+        "output": "An inspection map, responsibilities and requirements for the next delivery protocol.",
+        "inputs": "Acceptance plan, drawings and disagreement history.",
+        "limit": "Production certification is a separate procedure. The enterprise approves acceptance rules."
+      },
+      "price_status": "Плановая цена. Подтвердить сметой и договором."
+    },
+    {
+      "id": "training",
+      "name": "Практикум для ОТК",
+      "category": "Сопровождение",
+      "price": 18000,
+      "scope": "Одна группа до шести участников, разбор учебного кейса и формы протокола.",
+      "output": "Памятка по данным и учебное заполнение протокола с обратной связью специалиста.",
+      "inputs": "Типовые вопросы участников и один обезличенный пример.",
+      "limit": "Не образовательная программа с выдачей квалификации. Длительность и участие метролога подтверждаются до договора.",
+      "en": {
+        "name": "Quality team workshop",
+        "category": "Support",
+        "scope": "One group of up to six people, a sample case and protocol practice.",
+        "output": "A data checklist and completed training protocol with specialist feedback.",
+        "inputs": "Participant questions and one anonymised example.",
+        "limit": "No professional qualification is awarded. Duration and the specialist role need agreement."
+      },
+      "price_status": "Плановая цена. Подтвердить сметой и договором."
+    },
+    {
+      "id": "csv",
+      "name": "Подготовка обмена CSV",
+      "category": "Сопровождение",
+      "price": 35000,
+      "scope": "Один согласованный формат импорта и экспорта без подключения к ERP предприятия.",
+      "output": "Словарь колонок, шаблон файла, проверка единиц и пример выгрузки.",
+      "inputs": "Обезличенный образец файла, обязательные поля и правила проверки.",
+      "limit": "Интеграция с 1С, LIMS и производственными системами в стоимость не включена.",
+      "en": {
+        "name": "CSV exchange setup",
+        "category": "Support",
+        "scope": "One import/export format, without an ERP connection.",
+        "output": "Column dictionary, template, unit checks and a sample export.",
+        "inputs": "An anonymised input file, required fields and validation rules.",
+        "limit": "Production integrations with ERP or LIMS require separate development and pricing."
+      },
+      "price_status": "Плановая цена. Подтвердить сметой и договором."
+    }
+  ],
+  "pricing_rules": {
+    "extra_hour_rub": 1800
+  }
+}
