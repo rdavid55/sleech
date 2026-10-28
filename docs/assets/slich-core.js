@@ -3,9 +3,9 @@
  'use strict';
  const HEADERS=['case_id','protocol_version','object_id','characteristic','section','site','operator','repeat','value','unit','instrument_id','method','temperature_C','expanded_uncertainty','coverage_factor','reference_id','timestamp','comment'];
  const required=HEADERS.filter(x=>!['comment','temperature_C','reference_id'].includes(x));
- function num(v){if(String(v).trim()==='')return NaN;return Number(String(v).trim().replace(',','.'));}
+ function num(v){const s=String(v??'').trim().replace(',','.');if(!/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?$/i.test(s))return NaN;const n=Number(s);return Number.isFinite(n)?n:NaN;}
  function budget(service,months,cycles,connect,hours,shipping){
-   if(!service||![months,cycles,hours,shipping].every(Number.isFinite)||hours<0||hours>40||!Number.isInteger(hours)||shipping<0||shipping>500000)return null;
+   if(!service||!Number.isFinite(service.price)||service.price<0||![hours,shipping].every(Number.isFinite)||hours<0||hours>40||!Number.isInteger(hours)||shipping<0||shipping>500000)return null;
    if(service.id==='regular'&&(!Number.isInteger(months)||months<1||months>12||!Number.isInteger(cycles)||cycles<0||cycles>12))return null;
    const support=service.id==='regular'?months*15000:service.price, cycle=service.id==='regular'?cycles*75000:0, connection=service.id==='regular'&&connect?25000:0;
    return {support,cycle,connection,extra:hours*1800,shipping,total:support+cycle+connection+hours*1800+shipping};
@@ -19,7 +19,9 @@
    if(![x,u,k,ref,ur,kr].every(Number.isFinite)||u<=0||ur<=0||k<=0||kr<=0)return {ok:false,reason:'numbers'};
    if(!Array.isArray(gates)||gates.length!==4||!gates.every(v=>v===true))return {ok:false,reason:'gates'};
    if(Math.abs(k-kr)>1e-9)return {ok:false,reason:'coverage'};
-   const en=(x-ref)/Math.hypot(u,ur);return {ok:true,en,compatible:Math.abs(en)<=1};
+   const difference=x-ref, uncertainty=Math.hypot(u,ur), en=difference/uncertainty;
+   if(![difference,uncertainty,en].every(Number.isFinite))return {ok:false,reason:'range'};
+   return {ok:true,en,compatible:Math.abs(en)<=1};
  }
  function parseCSV(input){
    const text=String(input).replace(/^\uFEFF/,'');if(text.length>5*1024*1024)throw new Error('size');
@@ -55,8 +57,14 @@
    for(const [k,rs] of map){const vals=rs.map(r=>num(r.value));if(vals.some(x=>!Number.isFinite(x)))continue;const mean=vals.reduce((a,b)=>a+b,0)/vals.length;const sd=vals.length>1?Math.sqrt(vals.reduce((a,b)=>a+(b-mean)**2,0)/(vals.length-1)):null;const [site,section]=k.split('\u0000');groups.push({site,section,count:vals.length,mean,min:Math.min(...vals),max:Math.max(...vals),sd});}
    return {ok:errors.length===0,errors,rows,groups};
  }
- function csvCell(v){let s=String(v??'');if(/^[\s]*[=+@-]/.test(s)&&!Number.isFinite(Number(s)))s="'"+s;return '"'+s.replace(/"/g,'""')+'"';}
+ function csvCell(v){let s=String(v??'');if(/^[\s]*[=+@-]/.test(s)&&!Number.isFinite(num(s)))s="'"+s;return '"'+s.replace(/"/g,'""')+'"';}
  function csv(rows){return '\uFEFF'+rows.map(r=>r.map(csvCell).join(';')).join('\r\n');}
- root.SlichCore={HEADERS,num,budget,effect,compare,parseCSV,validateCSV,csv};
+ function validWorking(w){return !!w&&Array.isArray(w.headers)&&w.headers.every(h=>typeof h==='string')&&new Set(w.headers).size===w.headers.length&&HEADERS.every(h=>w.headers.includes(h))&&Array.isArray(w.rows)&&w.rows.length>0&&w.rows.length<=5000&&w.rows.every(r=>r&&Number.isInteger(r.line)&&r.line>=2&&Number.isInteger(r.width)&&r.width>=1&&r.data&&typeof r.data==='object'&&!Array.isArray(r.data)&&w.headers.every(h=>typeof r.data[h]==='string')&&Object.values(r.data).every(v=>typeof v==='string'));}
+ function readCase(r){
+   const keys=['case-id','object-id','characteristic','unit','protocol-version','case-owner'];
+   if(r?.schema!=='slich-case-v2'||!r.passport||typeof r.passport!=='object'||Array.isArray(r.passport)||!keys.every(k=>typeof r.passport[k]==='string'&&r.passport[k].length<=500)||(r.working!==null&&!validWorking(r.working)))throw new Error('schema');
+   return {passport:Object.fromEntries(keys.map(k=>[k,r.passport[k]])),working:r.working};
+ }
+ root.SlichCore={HEADERS,num,budget,effect,compare,parseCSV,validateCSV,csv,validWorking,readCase};
  if(typeof module!=='undefined')module.exports=root.SlichCore;
 })(typeof window!=='undefined'?window:globalThis);

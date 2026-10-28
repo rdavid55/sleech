@@ -130,3 +130,22 @@ table[data-responsive=scroll]{min-width:max-content}table[data-responsive=scroll
   .supply-line{gap:8px;font-size:11px}.supply-line i{width:14px}.viewer-canvas{height:260px}
   table[data-responsive=cards] td{padding:11px 12px;gap:10px}
 }
+
+/* Audit corrections: readable feedback, report labels and long imported values. */
+.import-feedback{margin:0 0 24px;border-color:#8d76a9;background:#f4eef9;color:#4d3d60}
+.import-feedback p{margin:0 0 14px;line-height:1.65}
+.import-feedback button{white-space:normal;min-height:44px}
+.import-feedback[hidden],.import-feedback [hidden]{display:none!important}
+.service-availability{margin:0 0 28px;font-size:15px;line-height:1.7}
+.report-meta div{overflow-wrap:anywhere;line-height:1.65}
+.report-meta span{font-size:13px;color:#65506f;margin-bottom:5px}
+.result-sheet dl,.result-line{font-size:14px;line-height:1.65;color:#5f4b6f}
+#effect-conclusion,#en-status{line-height:1.7}
+#raw-preview th{white-space:nowrap}
+button:disabled{cursor:not-allowed}
+@media screen and (max-width:600px){
+  #case-report table[data-responsive=cards] td{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  #case-report .cell-value{overflow-wrap:anywhere}
+  .import-feedback{padding:16px}
+  .import-feedback button{width:100%;font-size:14px}
+}

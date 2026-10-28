@@ -23,9 +23,8 @@
     });
   }
   document.querySelectorAll('[data-clear-local]').forEach(b => b.addEventListener('click', () => {
-    let ok = true;
-    for (const key of ['slich-brief-v1', 'slich-case-v2']) { try { privacy.drafts.removeItem(key); } catch { ok = false; } }
-    document.getElementById('data-clear-status').textContent = ok ? t('Сохранённые черновик и кейс удалены с устройства. Открытые поля остаются до закрытия страницы.', 'Saved brief and case removed from this device. Open fields remain until this page is closed.') : t('Память браузера недоступна. Удалите данные сайта в настройках браузера.', 'Browser storage is unavailable. Clear site data in your browser settings.');
+    const ok = privacy.clearSaved();
+    document.getElementById('data-clear-status').textContent = ok ? t('Постоянные черновики и состояние текущей вкладки очищены. Поля в других открытых вкладках не меняются: повторное сохранение создаст новую копию.', 'Persistent drafts and this tab’s saved state are cleared. Fields in other open tabs are unchanged; saving them again will create a new copy.') : t('Не удалось полностью очистить память браузера. Удалите данные сайта в настройках браузера.', 'Browser storage could not be fully cleared. Clear site data in your browser settings.');
   }));
   const tabs = [...document.querySelectorAll('[data-lens-step]')];
   const stepCopy = en ? [

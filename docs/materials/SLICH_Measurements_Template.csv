@@ -1,2 +1,2 @@
-﻿case_id;protocol_version;object_id;characteristic;section;site;operator;repeat;value;unit;instrument_id;method;temperature_C;expanded_uncertainty;coverage_factor;reference_id;timestamp;comment
-CASE-___;v___;OBJ-___;наружный диаметр;___;___;___;___;;мм;___;___;;;;___;;Заполнить по согласованному методу; учебный шаблон
+﻿"case_id";"protocol_version";"object_id";"characteristic";"section";"site";"operator";"repeat";"value";"unit";"instrument_id";"method";"temperature_C";"expanded_uncertainty";"coverage_factor";"reference_id";"timestamp";"comment"
+"CASE-___";"v___";"OBJ-___";"наружный диаметр";"___";"___";"___";"___";"";"mm";"___";"___";"";"";"";"___";"";"Заполнить по согласованному методу; учебный шаблон"
