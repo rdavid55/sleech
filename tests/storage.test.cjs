@@ -15,10 +15,10 @@ test('privacy mode changes never replace a newer saved draft with an old session
 });
 test('clear removes drafts and all owned page snapshots, preserving preferences and unrelated data',()=>{
  const {api,sessionStorage,localStorage}=setup();api.choose(true);
- api.drafts.setItem('slich-case-v2','case');api.drafts.setItem('slich-brief-v1','brief');
+ api.drafts.setItem('slich-case-v2','case');api.drafts.setItem('slich-brief-v1','brief');api.drafts.setItem('slich-intake-v2','intake');
  sessionStorage.setItem('slich-page-v2-workspace','case copy');sessionStorage.setItem('slich-page-v2-measurements','measurements');sessionStorage.setItem('unrelated','keep');
  assert.equal(api.clearSaved(),true);
- assert.equal(api.drafts.getItem('slich-case-v2'),null);assert.equal(api.drafts.getItem('slich-brief-v1'),null);
+ assert.equal(api.drafts.getItem('slich-case-v2'),null);assert.equal(api.drafts.getItem('slich-brief-v1'),null);assert.equal(api.drafts.getItem('slich-intake-v2'),null);
  assert.equal(sessionStorage.getItem('slich-page-v2-workspace'),null);assert.equal(sessionStorage.getItem('slich-page-v2-measurements'),null);
  assert.equal(sessionStorage.getItem('unrelated'),'keep');assert.ok(localStorage.getItem('sleech-privacy-v1'));
 });

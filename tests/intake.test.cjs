@@ -21,3 +21,12 @@ test('normalisation rejects role injection and unknown requirement fields',()=>{
  const v=core.normalize({...ready,requirements:['method','admin','method'],description:'a'.repeat(5000),price:1});
  assert.deepEqual(v.requirements,['method']);assert.equal(v.description.length,4000);assert.equal(v.price,undefined);
 });
+
+test('workflow pages invalidate the old storage script cache before using the new draft key',()=>{
+ const fs=require('node:fs');
+ for(const path of ['docs/start.html','docs/portal.html','docs/en/start.html']){
+  const html=fs.readFileSync(path,'utf8');
+  const url=html.match(/src="([^"<>]*assets\/sleech-data\.js[^"<>]*)"/)[1];
+  assert.match(url,/20261031/,path);
+ }
+});

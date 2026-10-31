@@ -5,7 +5,7 @@ from pathlib import Path
 import json, re
 ROOT=Path(__file__).resolve().parent.parent
 DOCS=ROOT/'docs'
-RELEASE='20261031-workflow'
+RELEASE='20261031-workflow2'
 
 def page(name,title,body,en=False,scripts=()):
     base=DOCS/('en' if en else '')
@@ -28,8 +28,8 @@ for en in (False,True):
     def t(ru,eng): return eng if en else ru
     fields=[
       ('role',t('Кем Вы выступаете?','Your role'), [('customer',t('Заказчик продукции','Product customer')),('supplier',t('Поставщик','Supplier')),('laboratory',t('Лаборатория / ОТК','Laboratory / quality team')),('unknown',t('Не знаю','Not sure'))]),
-      ('stage',t('Что произошло?','What happened?'), [('conflict',t('Получены разные результаты контроля','Results disagree')),('prevent',t('Хотим согласовать контроль до поставки','Align inspection before delivery')),('unknown',t('Пока нужно разобраться','Need help understanding the task'))]),
-      ('category',t('Какие показатели контролируете?','Which characteristics are checked?'), [('geometry',t('Геометрические величины: размеры, форма','Geometry: dimensions, shape')),('physical',t('Физические свойства','Physical properties')),('chemical',t('Химические показатели','Chemical characteristics')),('other',t('Другая группа','Other')),('unknown',t('Не знаю','Not sure'))]),
+      ('stage',t('Что произошло?','What happened?'), [('conflict',t('Результаты различаются','Results disagree')),('prevent',t('Подготовка до поставки','Before delivery')),('unknown',t('Пока нужно разобраться','Need help understanding the task'))]),
+      ('category',t('Какие показатели контролируете?','Which characteristics are checked?'), [('geometry',t('Размеры и форма','Dimensions / shape')),('physical',t('Физические свойства','Physical properties')),('chemical',t('Химические показатели','Chemical characteristics')),('other',t('Другая группа','Other')),('unknown',t('Не знаю','Not sure'))]),
       ('evidence',t('Какие исходные результаты есть?','Available measurement results'), [('two',t('Результаты обеих сторон','Results from both parties')),('one',t('Результаты одной стороны','Results from one party')),('none',t('Данных пока нет','No results yet')),('unknown',t('Не знаю','Not sure'))])]
     selects=''.join(f'<label>{label}<select name="{key}" required><option value="">{t("Выберите вариант","Choose an option")}</option>'+''.join(f'<option value="{v}">{label}</option>' for v,label in opts)+'</select></label>' for key,label,opts in fields)
     checks=[('method',t('Согласовать метод и условия','Align method and conditions')),('uncertainty',t('Учесть неопределённость результатов','Consider measurement uncertainty')),('traceability',t('Проверить сведения о прослеживаемости','Review traceability information')),('protocol',t('Подготовить общий протокол','Prepare a shared protocol')),('confidentiality',t('Отдельно согласовать конфиденциальность','Agree confidentiality separately'))]
@@ -63,6 +63,9 @@ for file in list(DOCS.glob('*.html'))+list((DOCS/'en').glob('*.html')):
       text=text.replace('<summary>Ещё</summary><div>','<summary>Ещё</summary><div><a href="solution.html">Решение</a>',1) if not en else text.replace('<summary>More</summary><div>','<summary>More</summary><div><a href="solution.html">Our solution</a>',1)
     text=text.replace('Файлы и расчёты остаются в браузере. Выберите:', 'Локальные расчёты остаются в браузере. Заявки и файлы передаются только после подтверждения в кабинете. Выберите:')
     text=text.replace('Files and calculations stay in your browser. Choose:', 'Local calculations stay in your browser. Requests and attachments are sent only after confirmation in the portal. Choose:')
+    text=re.sub(r'(assets/sleech-data\.js)\?v=[^"\s]+',rf'\1?v={RELEASE}',text)
+    text=re.sub(r'(assets/intake\.css)\?v=[^"\s]+',rf'\1?v={RELEASE}',text)
+    text=re.sub(r'(<a class="text-link"[^>]*>)([^<]*?) ↗</a>',r'\1\2</a>',text)
     file.write_text(text)
 
 # Home page: the product is a workflow, not a single part or a metrology formula.
