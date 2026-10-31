@@ -2,7 +2,7 @@
 (() => {
   'use strict';
   const CHOICE = 'sleech-privacy-v1', LIFE = 180 * 864e5;
-  const DRAFTS = ['slich-brief-v1', 'slich-case-v2'];
+  const DRAFTS = ['slich-brief-v1','slich-intake-v2', 'slich-case-v2'];
   const memory = new Map();
   let preference = null;
   try {

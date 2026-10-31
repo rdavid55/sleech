@@ -1,0 +1,12 @@
+import { resolve } from 'node:path';
+import { openStore } from './store.mjs';
+import { createApp } from './app.mjs';
+process.umask(0o077);
+const port=Number(process.env.PORT||8080), host=process.env.HOST||'127.0.0.1';
+const siteOrigin=process.env.SITE_ORIGIN||`http://localhost:${port}`;
+if(process.env.NODE_ENV==='production'&&!siteOrigin.startsWith('https://')) throw Error('Set SITE_ORIGIN to the public HTTPS origin');
+const store=openStore(resolve(process.env.SLICH_DATA_DIR||'data','slich.sqlite'));
+const server=createApp({store,siteOrigin,origins:(process.env.ALLOWED_ORIGINS||'').split(',').filter(Boolean)});
+server.listen(port,host,()=>console.log(`SLICH listening on ${host}:${port}`));
+const stop=()=>server.close(()=>{store.close();process.exit(0)});
+process.on('SIGTERM',stop);process.on('SIGINT',stop);
