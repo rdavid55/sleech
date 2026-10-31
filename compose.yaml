@@ -1,0 +1,27 @@
+services:
+  server:
+    build: .
+    restart: unless-stopped
+    environment:
+      SITE_ORIGIN: https://${SLICH_DOMAIN:?Set SLICH_DOMAIN in .env}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-https://rdavid55.github.io}
+    volumes:
+      - slich-data:/app/data
+  https:
+    image: caddy:2
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      SLICH_DOMAIN: ${SLICH_DOMAIN:?Set SLICH_DOMAIN in .env}
+    volumes:
+      - ./server/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      - server
+volumes:
+  slich-data:
+  caddy-data:
+  caddy-config:
